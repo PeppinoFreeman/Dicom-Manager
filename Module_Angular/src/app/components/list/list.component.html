@@ -1,0 +1,15 @@
+<div *ngIf="isListLoaded; else emptyList">
+  <ul>
+    <li *ngFor="let item of list$ | async">
+      <a (click)="navigateToView(item.id)"
+        >{{ item.name }} {{ item.surname }}</a
+      >
+    </li>
+  </ul>
+</div>
+
+<ng-template #emptyList
+  ><p style="padding-left: 20px">
+    {{ "EMPTY-LIST" | translate }}.
+  </p></ng-template
+>

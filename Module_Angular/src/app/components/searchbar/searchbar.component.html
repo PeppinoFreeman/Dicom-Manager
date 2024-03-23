@@ -1,0 +1,12 @@
+<form class="d-flex" role="search" (submit)="searchView()">
+  <input
+    class="form-control me-2"
+    type="search"
+    [(ngModel)]="searchText"
+    [ngModelOptions]="{ standalone: true }"
+    [placeholder]="'SEARCH-PLACEHOLDER' | translate"
+  />
+  <button class="btn btn-outline-light" type="submit">
+    {{ "SEARCH-BUTTON" | translate }}
+  </button>
+</form>

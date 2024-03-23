@@ -1,0 +1,19 @@
+.navbar-brand,
+.nav-link {
+  color: antiquewhite;
+}
+
+.nav-link.active,
+.nav-link:hover,
+.navbar-brand:hover {
+  color: cyan;
+}
+
+nav {
+  margin-bottom: 20px;
+}
+
+#navbarNav {
+  display: flex;
+  justify-content: space-between;
+}

@@ -1,0 +1,18 @@
+<li class="nav-item dropdown" ngbDropdown>
+  <a
+    ngbDropdownToggle
+    class="nav-link dropdown-toggle"
+    role="button"
+    data-bs-toggle="dropdown"
+  >
+    {{ "SWITCH-LANGUAGE" | translate }}
+  </a>
+  <ul class="dropdown-menu" ngbDropdownMenu>
+    <li ngbDropdownItem class="dropdown-item" (click)="switchLanguage('fr')">
+      {{ "FRENCH" | translate }}
+    </li>
+    <li ngbDropdownItem class="dropdown-item" (click)="switchLanguage('en')">
+      {{ "ENGLISH" | translate }}
+    </li>
+  </ul>
+</li>

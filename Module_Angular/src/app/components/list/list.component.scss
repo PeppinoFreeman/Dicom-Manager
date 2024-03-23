@@ -1,0 +1,11 @@
+a {
+  padding-bottom: 5px;
+  cursor: pointer;
+}
+
+li {
+  padding-bottom: 5px;
+  &:hover {
+    color: cyan;
+  }
+}

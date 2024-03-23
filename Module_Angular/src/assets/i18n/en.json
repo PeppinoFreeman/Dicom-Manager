@@ -1,0 +1,29 @@
+{
+    "TITLE": "Test App",
+    "CREATE": "Create",
+    "LIST": "List",
+    "CREATE-FORM": {
+        "PATIENT-NAME": "Name",
+        "PATIENT-SURNAME": "Surname",
+        "PATIENT-BIRTHDATE": "Birthdate",
+        "PATIENT-SEX": "Sex",
+        "PATIENT-NAME-PLACEHOLDER": "Insert your name",
+        "PATIENT-SURNAME-PLACEHOLDER": "Insert your surname",
+        "PATIENT-BIRTHDATE-PLACEHOLDER": "Choose a date in the format MM/DD/YYYY",
+        "MALE": "Male",
+        "FEMALE": "Female",
+        "OTHER": "Other",
+        "CHOOSE-FILE": "Choose a file",
+        "DRAG-FILE": "Or drag it here",
+        "SUBMIT": "Validate"
+    },
+    "EMPTY-LIST": "The list is empty",
+    "SWITCH-LANGUAGE": "Language",
+    "FRENCH": "French",
+    "ENGLISH": "English",
+    "SEARCH-PLACEHOLDER": "Search",
+    "SEARCH-BUTTON": "Search",
+    "VIEW-NOT-FOUND": "This view does not exist",
+    "START-SEGMENTATION": "Start Segmentation",
+    "DISMISS-TOAST": "Dismiss"
+}

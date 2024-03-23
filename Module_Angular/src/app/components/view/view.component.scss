@@ -1,0 +1,29 @@
+.view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-container {
+  max-width: 400px;
+  margin-right: 15px;
+  background-color: #3f51b4;
+}
+
+.card-title,
+.card-subtitle {
+  color: antiquewhite;
+}
+
+.card-subtitle {
+  font-style: italic;
+}
+
+.segmentedImg {
+  margin-right: auto;
+  margin-left: auto;
+  width: 50%;
+  display: flex;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}

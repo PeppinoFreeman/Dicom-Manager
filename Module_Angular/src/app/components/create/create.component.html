@@ -1,0 +1,129 @@
+<app-spinner [isBusy]="isBusy" [diameter]="100"></app-spinner>
+
+<form
+  enctype="multipart/form-data"
+  [formGroup]="createCaseForm"
+  (submit)="isBusy = true; create()"
+>
+  <div class="row form-group">
+    <label for="patientName" class="col-xs-2 control-label">{{
+      "CREATE-FORM.PATIENT-NAME" | translate
+    }}</label>
+    <div class="col-xs-4">
+      <input
+        type="text"
+        [formControlName]="formControls.patientName"
+        class="form-control"
+        [placeholder]="'CREATE-FORM.PATIENT-NAME-PLACEHOLDER' | translate"
+        required
+      />
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <label for="patientSurname" class="col-xs-2 control-label">{{
+      "CREATE-FORM.PATIENT-SURNAME" | translate
+    }}</label>
+    <div class="col-xs-4">
+      <input
+        type="text"
+        [formControlName]="formControls.patientSurname"
+        class="form-control"
+        [placeholder]="'CREATE-FORM.PATIENT-SURNAME-PLACEHOLDER' | translate"
+        required
+      />
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <label for="patientBirthdate" class="col-xs-2 control-label">{{
+      "CREATE-FORM.PATIENT-BIRTHDATE" | translate
+    }}</label>
+    <mat-form-field class="col-xs-2">
+      <mat-label>{{
+        "CREATE-FORM.PATIENT-BIRTHDATE-PLACEHOLDER" | translate
+      }}</mat-label>
+      <input
+        [formControlName]="formControls.patientBirthdate"
+        matInput
+        [matDatepicker]="picker"
+        required
+      />
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+  </div>
+
+  <div class="row form-group">
+    <label for="patientSex" class="col-xs-2 control-label">{{
+      "CREATE-FORM.PATIENT-SEX" | translate
+    }}</label>
+    <div class="col-xs-4">
+      <mat-radio-group [formControlName]="formControls.patientSex">
+        <mat-radio-button [value]="sex.M">{{
+          "CREATE-FORM.MALE" | translate
+        }}</mat-radio-button>
+        <mat-radio-button [value]="sex.F">{{
+          "CREATE-FORM.FEMALE" | translate
+        }}</mat-radio-button>
+        <mat-radio-button [value]="sex.O">{{
+          "CREATE-FORM.OTHER" | translate
+        }}</mat-radio-button>
+      </mat-radio-group>
+    </div>
+  </div>
+
+  <div class="form-group" [ngClass]="{ 'is-dragover': isDragOver }">
+    <div class="col-xs-12">
+      <div class="upload">
+        <label
+          for="file-upload-label"
+          class="upload_text input-container"
+          (dragover)="onDragOver($event)"
+          (dragenter)="onDragOver($event)"
+          (dragleave)="isDragOver = false"
+          (drop)="$event.preventDefault(); addFiles($event)"
+        >
+          <img class="icon" src="../../../assets/images/ico-upload.svg" />
+          <b name="file-upload-label">{{
+            "CREATE-FORM.CHOOSE-FILE" | translate
+          }}</b>
+          {{ "CREATE-FORM.DRAG-FILE" | translate }}.
+        </label>
+
+        <input
+          type="file"
+          id="file-upload-label"
+          (change)="addFiles($event)"
+          multiple
+          accept="image/*,.dcm"
+        />
+
+        <div class="upload_list">
+          <div class="upload_thumb" *ngFor="let image of imagesToDisplay">
+            <div
+              class="remove-thumb"
+              (click)="removeImage(image); $event.stopPropagation()"
+            ></div>
+            <img [src]="image.content" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-xs-12 submit-button">
+      <button
+        [disabled]="createCaseForm.invalid || !images.length"
+        type="submit"
+        mat-raised-button
+      >
+        {{ "CREATE-FORM.SUBMIT" | translate }}
+      </button>
+    </div>
+  </div>
+</form>

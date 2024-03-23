@@ -1,0 +1,29 @@
+{
+    "TITLE": "Test App",
+    "CREATE": "Créer",
+    "LIST": "Liste",
+    "CREATE-FORM": {
+        "PATIENT-NAME": "Prénom",
+        "PATIENT-SURNAME": "Nom",
+        "PATIENT-BIRTHDATE": "Date de naissance",
+        "PATIENT-SEX": "Sexe",
+        "PATIENT-NAME-PLACEHOLDER": "Insérez votre prénom",
+        "PATIENT-SURNAME-PLACEHOLDER": "Insérez votre nom",
+        "PATIENT-BIRTHDATE-PLACEHOLDER": "Choisissez une date au format MM/DD/YYYY",
+        "MALE": "Homme",
+        "FEMALE": "Femme",
+        "OTHER": "Autre",
+        "CHOOSE-FILE": "Choisissez un fichier",
+        "DRAG-FILE": "Ou glissez-le ici",
+        "SUBMIT": "Valider"
+    },
+    "EMPTY-LIST": "La liste est vide",
+    "SWITCH-LANGUAGE": "Langue",
+    "FRENCH": "Français",
+    "ENGLISH": "Anglais",
+    "SEARCH-PLACEHOLDER": "Rechercher",
+    "SEARCH-BUTTON": "Rechercher",
+    "VIEW-NOT-FOUND": "Cette vue n'existe pas",
+    "START-SEGMENTATION": "Segmenter",
+    "DISMISS-TOAST": "Fermer"
+}
