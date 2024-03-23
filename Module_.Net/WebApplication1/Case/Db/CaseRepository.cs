@@ -18,8 +18,8 @@
                         PatientSex = Sex.O,
                         DicomUrl = new List<string>()
                         {
-                            "https://teststorage111.blob.core.windows.net/container-2a571e2f-356d-469c-bd19-cea7d2cd688b/12204360056.dcm",
-                            "https://teststorage111.blob.core.windows.net/container-2a571e2f-356d-469c-bd19-cea7d2cd688b/12204360057.dcm"
+                         "http://127.0.0.1:10000/devstoreaccount1/container-969c7805-3b7e-4b9e-93e1-28497e29105a/1-01.dcm",
+                         "http://127.0.0.1:10000/devstoreaccount1/container-969c7805-3b7e-4b9e-93e1-28497e29105a/1-02.dcm",
                         }
                     },
                     new()
@@ -29,12 +29,11 @@
                         PatientSurname = "Perreira",
                         PatientBirthdate = new DateTime(1991, 5, 24),
                         PatientSex = Sex.M,
-                        DicomUrl = new List<string>() 
+                        DicomUrl = new List<string>()
                         {
-                            "https://teststorage111.blob.core.windows.net/container-2/12204360055.dcm", 
-                            "https://teststorage111.blob.core.windows.net/container-2/12204360056.dcm", 
-                            "https://teststorage111.blob.core.windows.net/container-2/12204360057.dcm",
-                            "https://teststorage111.blob.core.windows.net/container-2/12204360058.dcm"
+                            "http://127.0.0.1:10000/devstoreaccount1/container-969c7805-3b7e-4b9e-93e1-28497e29105a/1-01.dcm",
+                            "http://127.0.0.1:10000/devstoreaccount1/container-969c7805-3b7e-4b9e-93e1-28497e29105a/1-02.dcm",
+                            "http://127.0.0.1:10000/devstoreaccount1/container-969c7805-3b7e-4b9e-93e1-28497e29105a/1-03.dcm",
                         }
                     },
                     new()
@@ -44,11 +43,11 @@
                         PatientSurname = "Bartovsky",
                         PatientBirthdate = new DateTime(1998, 6, 5),
                         PatientSex = Sex.F,
-                        DicomUrl = new List<string>() 
+                        DicomUrl = new List<string>()
                         {
-                            "https://teststorage111.blob.core.windows.net/container-029e7314-5de6-4c1f-be9c-820fbf87db96/12204360141.dcm",
-                            "https://teststorage111.blob.core.windows.net/container-029e7314-5de6-4c1f-be9c-820fbf87db96/12204360142.dcm",
-                            "https://teststorage111.blob.core.windows.net/container-029e7314-5de6-4c1f-be9c-820fbf87db96/12204360143.dcm",
+                            "http://127.0.0.1:10000/devstoreaccount1/container-969c7805-3b7e-4b9e-93e1-28497e29105a/1-01.dcm",
+                            "http://127.0.0.1:10000/devstoreaccount1/container-969c7805-3b7e-4b9e-93e1-28497e29105a/1-02.dcm",
+                            "http://127.0.0.1:10000/devstoreaccount1/container-969c7805-3b7e-4b9e-93e1-28497e29105a/1-03.dcm"
                         }
                     }
                 };

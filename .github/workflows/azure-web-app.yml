@@ -2,13 +2,13 @@ name: .NET Web App CI/CD
 on:
   push:
     branches:
-    - sch/full-stack-project
+    - master
 env:
   AZURE_WEBAPP_NAME: WebApplication120240318123549
   AZURE_WEBAPP_PACKAGE_PATH: ./publish
   CONFIGURATION: Release
   DOTNET_CORE_VERSION: 8.0.x
-  WORKING_DIRECTORY: "Samy/Module_.Net/WebApplication1"
+  WORKING_DIRECTORY: "Module_.Net/WebApplication1"
 jobs:
   build:
     runs-on: ubuntu-latest

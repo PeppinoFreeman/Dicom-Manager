@@ -1,5 +1,5 @@
 #!/bin/bash
 
-SOLUTION_DIR="Samy/azurite/workspace"
+SOLUTION_DIR="Azurite_Storage/workspace"
 
 azurite-blob -l "$SOLUTION_DIR"
