@@ -1,14 +1,16 @@
 <app-spinner [isBusy]="isBusy" [diameter]="100"></app-spinner>
 
-<div class="view" *ngIf="isDataLoaded; else viewNotFound">
-  <mat-card *ngFor="let image of imagesContent" class="card-container">
+@if (isDataLoaded){
+<div class="view">
+  @for(image of imagesContent; track $index) {
+  <mat-card class="card-container">
     <mat-card-header class="card-header">
-      <mat-card-title class="card-title"
-        >{{ case.name }} {{ case.surname }}</mat-card-title
-      >
-      <mat-card-subtitle class="card-subtitle">{{
-        case.birthdate
-      }}</mat-card-subtitle>
+      <mat-card-title class="card-title">
+        {{ case.name }} {{ case.surname }}
+      </mat-card-title>
+      <mat-card-subtitle class="card-subtitle">
+        {{ case.birthdate }}
+      </mat-card-subtitle>
     </mat-card-header>
     <img mat-card-image [src]="image" alt="DICOM Image" />
     <mat-card-actions>
@@ -17,11 +19,15 @@
       </button>
     </mat-card-actions>
   </mat-card>
+  }
 </div>
+} @else {
+<p class="text">{{ "VIEW-NOT-FOUND" | translate }}.</p>
+}
 
-<ng-template #viewNotFound
-  ><p class="text">{{ "VIEW-NOT-FOUND" | translate }}.</p></ng-template
->
-<div class="segmentedImg" *ngIf="segmentedData">
+<!-- Segmentation -->
+@if (segmentedData){
+<div class="segmentedImg">
   <img [src]="'data:image/png;base64,' + segmentedData" alt="Dicom Img" />
 </div>
+}

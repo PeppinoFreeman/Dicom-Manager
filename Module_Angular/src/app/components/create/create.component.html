@@ -6,9 +6,9 @@
   (submit)="isBusy = true; create()"
 >
   <div class="row form-group">
-    <label for="patientName" class="col-xs-2 control-label">{{
-      "CREATE-FORM.PATIENT-NAME" | translate
-    }}</label>
+    <label for="patientName" class="col-xs-2 control-label">
+      {{ "CREATE-FORM.PATIENT-NAME" | translate }}
+    </label>
     <div class="col-xs-4">
       <input
         type="text"
@@ -21,9 +21,9 @@
   </div>
 
   <div class="row form-group">
-    <label for="patientSurname" class="col-xs-2 control-label">{{
-      "CREATE-FORM.PATIENT-SURNAME" | translate
-    }}</label>
+    <label for="patientSurname" class="col-xs-2 control-label">
+      {{ "CREATE-FORM.PATIENT-SURNAME" | translate }}
+    </label>
     <div class="col-xs-4">
       <input
         type="text"
@@ -36,13 +36,13 @@
   </div>
 
   <div class="row form-group">
-    <label for="patientBirthdate" class="col-xs-2 control-label">{{
-      "CREATE-FORM.PATIENT-BIRTHDATE" | translate
-    }}</label>
+    <label for="patientBirthdate" class="col-xs-2 control-label">
+      {{ "CREATE-FORM.PATIENT-BIRTHDATE" | translate }}
+    </label>
     <mat-form-field class="col-xs-2">
-      <mat-label>{{
-        "CREATE-FORM.PATIENT-BIRTHDATE-PLACEHOLDER" | translate
-      }}</mat-label>
+      <mat-label>
+        {{ "CREATE-FORM.PATIENT-BIRTHDATE-PLACEHOLDER" | translate }}
+      </mat-label>
       <input
         [formControlName]="formControls.patientBirthdate"
         matInput
@@ -58,20 +58,20 @@
   </div>
 
   <div class="row form-group">
-    <label for="patientSex" class="col-xs-2 control-label">{{
-      "CREATE-FORM.PATIENT-SEX" | translate
-    }}</label>
+    <label for="patientSex" class="col-xs-2 control-label">
+      {{ "CREATE-FORM.PATIENT-SEX" | translate }}
+    </label>
     <div class="col-xs-4">
       <mat-radio-group [formControlName]="formControls.patientSex">
-        <mat-radio-button [value]="sex.M">{{
-          "CREATE-FORM.MALE" | translate
-        }}</mat-radio-button>
-        <mat-radio-button [value]="sex.F">{{
-          "CREATE-FORM.FEMALE" | translate
-        }}</mat-radio-button>
-        <mat-radio-button [value]="sex.O">{{
-          "CREATE-FORM.OTHER" | translate
-        }}</mat-radio-button>
+        <mat-radio-button [value]="sex.M">
+          {{ "CREATE-FORM.MALE" | translate }}
+        </mat-radio-button>
+        <mat-radio-button [value]="sex.F">
+          {{ "CREATE-FORM.FEMALE" | translate }}
+        </mat-radio-button>
+        <mat-radio-button [value]="sex.O">
+          {{ "CREATE-FORM.OTHER" | translate }}
+        </mat-radio-button>
       </mat-radio-group>
     </div>
   </div>
@@ -88,9 +88,9 @@
           (drop)="$event.preventDefault(); addFiles($event)"
         >
           <img class="icon" src="../../../assets/images/ico-upload.svg" />
-          <b name="file-upload-label">{{
-            "CREATE-FORM.CHOOSE-FILE" | translate
-          }}</b>
+          <b name="file-upload-label">
+            {{ "CREATE-FORM.CHOOSE-FILE" | translate }}
+          </b>
           {{ "CREATE-FORM.DRAG-FILE" | translate }}.
         </label>
 
@@ -103,13 +103,15 @@
         />
 
         <div class="upload_list">
-          <div class="upload_thumb" *ngFor="let image of imagesToDisplay">
+          @for (image of imagesToDisplay; track $index) {
+          <div class="upload_thumb">
             <div
               class="remove-thumb"
               (click)="removeImage(image); $event.stopPropagation()"
             ></div>
             <img [src]="image.content" />
           </div>
+          }
         </div>
       </div>
     </div>

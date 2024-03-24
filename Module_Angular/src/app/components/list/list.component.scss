@@ -1,11 +1,39 @@
-a {
-  padding-bottom: 5px;
-  cursor: pointer;
+table,
+mat-paginator,
+.mat-mdc-form-field {
+  width: 95%;
+  min-width: 60%;
+  margin: auto;
 }
 
-li {
-  padding-bottom: 5px;
-  &:hover {
+.mat-mdc-form-field {
+  display: block;
+}
+
+table {
+  th,
+  td {
+    width: 25%;
+  }
+
+  .action-cell {
+    text-align: center;
+
+    button {
+      margin-left: 5px;
+      margin-right: 5px;
+    }
+  }
+
+  .mat-mdc-row .mat-mdc-cell {
+    cursor: pointer;
+  }
+
+  .mat-mdc-row:hover .mat-mdc-cell {
     color: cyan;
+  }
+
+  .mat-mdc-row:last-of-type {
+    border-bottom: 1px solid #ddd;
   }
 }

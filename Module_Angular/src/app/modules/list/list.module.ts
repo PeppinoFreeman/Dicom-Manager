@@ -1,11 +1,29 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ListComponent } from '../../components/list/list.component';
-import { ListRoutingModule } from './list-routing.module';
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 import { TranslateModule } from '@ngx-translate/core';
+import { ListComponent } from '../../components/list/list.component';
+import { CapitalizePipe } from '../../pipes/capitalize.pipe';
+import { ListRoutingModule } from './list-routing.module';
 
 @NgModule({
   declarations: [ListComponent],
-  imports: [CommonModule, TranslateModule.forChild(), ListRoutingModule],
+  imports: [
+    CommonModule,
+    MatTableModule,
+    MatButtonModule,
+    MatSortModule,
+    MatPaginatorModule,
+    MatFormFieldModule,
+    MatInputModule,
+    CapitalizePipe,
+    TranslateModule.forChild(),
+    ListRoutingModule,
+  ],
 })
 export class ListModule {}

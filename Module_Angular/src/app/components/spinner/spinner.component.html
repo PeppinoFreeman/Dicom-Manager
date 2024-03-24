@@ -1,3 +1,5 @@
-<div class="overlay" *ngIf="isBusy">
+@if (isBusy) {
+<div class="overlay">
   <mat-spinner diameter="100"></mat-spinner>
 </div>
+}

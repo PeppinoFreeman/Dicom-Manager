@@ -17,6 +17,9 @@
         "DRAG-FILE": "Or drag it here",
         "SUBMIT": "Validate"
     },
+    "FILTER-PLACEHOLDER": "Write a word to filter the table",
+    "DELETE": "Delete",
+    "EDIT": "Edit",
     "EMPTY-LIST": "The list is empty",
     "SWITCH-LANGUAGE": "Language",
     "FRENCH": "French",
