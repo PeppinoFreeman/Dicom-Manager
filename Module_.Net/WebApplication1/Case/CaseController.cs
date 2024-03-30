@@ -19,14 +19,16 @@ namespace WebApplication1.Case
         private readonly ILogger<CaseController> _logger;
         private readonly ICaseRepository _caseRepository;
         private readonly BlobServiceClient _blobServiceClient;
+        private readonly FileService _fileService;
 
         public CaseController(IConfiguration configuration, ILogger<CaseController> logger, ICaseRepository caseRepository,
-            BlobServiceClient blobServiceClient)
+            BlobServiceClient blobServiceClient, FileService fileService)
         {
             _configuration = configuration;
             _logger = logger;
             _caseRepository = caseRepository;
             _blobServiceClient = blobServiceClient;
+            _fileService = fileService;
         }
 
         /// <summary>
@@ -116,7 +118,7 @@ namespace WebApplication1.Case
                     var streamedFileContent = await FileHelper.ProcessStreamedFile(section, contentDisposition);
                     var fileName = contentDisposition?.FileName.Value;
 
-                    dicomUrls.Add(await UploadToAzureStorage(streamedFileContent, fileName, @case.Id));
+                    dicomUrls.Add(await _fileService.UploadToAzureStorage(streamedFileContent, fileName, @case.Id));
 
                     _logger.LogInformation("Uploaded file '{fileName}' to Azure Blob Storage'", fileName);
                 }
@@ -155,8 +157,16 @@ namespace WebApplication1.Case
                 throw new RequestFailedException("Case does not exist");
             }
 
-            // TODO: Handle blob storage deletion
-            await _caseRepository.DeleteCase(@case);
+            await _fileService.DeleteBlobContainer(id);
+
+            try
+            {
+                await _caseRepository.DeleteCase(@case);
+            }
+            catch (RequestFailedException ex)
+            {
+                throw new RequestFailedException($"Could not delete the case : {ex}");
+            }
 
             return Ok(id);
         }
@@ -191,29 +201,18 @@ namespace WebApplication1.Case
             @case.PatientSex = caseInput.Sex;
             @case.PatientBirthdate = caseInput.Birthdate;
 
-            // TODO: Handle blob storage update
-            await _caseRepository.UpdateCase(@case);
+            await _fileService.UpdateBlobContainer(id);
 
-            return Ok(id);
-        }
-
-        private async Task<string> UploadToAzureStorage(byte[] fileContent, string fileName, string id)
-        {
             try
             {
-                var containerClient = _blobServiceClient.GetBlobContainerClient($"container-{id}");
-                await containerClient.CreateIfNotExistsAsync();
-
-                var blobClient = containerClient.GetBlobClient(fileName);
-
-                using var imageStream = new MemoryStream(fileContent);
-                await blobClient.UploadAsync(imageStream, true);
-                return blobClient.Uri.ToString();
+                await _caseRepository.UpdateCase(@case);
             }
             catch (RequestFailedException ex)
             {
-                throw new RequestFailedException($"Could not upload the file : {ex}");
+                throw new RequestFailedException($"Could not update the case : {ex}");
             }
+
+            return Ok(id);
         }
 
         private static async Task InsertFormFieldIntoCase(MultipartSection section, ContentDispositionHeaderValue? contentDisposition, Case @case)
@@ -242,7 +241,20 @@ namespace WebApplication1.Case
             }
         }
 
-        private string GenerateSharedAccessToken(string id)
+        /// <summary>
+        /// Generate a signature for a file URL to make it accessible for external origins
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     PUT /api/Case/SignUrl
+        ///     {
+        ///        "id": "string example",
+        ///     }
+        /// <param name="id">Case's unique identifier</param>
+        /// <returns>The signature string to append to the file URL</returns>
+        [HttpGet("SignURL/{id}", Name = "SignURL")]
+        public string GenerateSharedAccessToken(string id)
         {
             var containerClient = _blobServiceClient.GetBlobContainerClient($"container-{id}");
             var sasToken = containerClient.GenerateSasUri(BlobContainerSasPermissions.All, DateTimeOffset.UtcNow.AddMinutes(30)).Query;

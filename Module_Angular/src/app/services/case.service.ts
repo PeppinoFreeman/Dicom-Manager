@@ -50,4 +50,8 @@ export class CaseService {
   editCase(patient: IPatient, images: IImage[], id = ''): Observable<string> {
     return this.http.put<string>(`${this._url}/${id}`, { ...patient });
   }
+
+  getURLSignature(id = ''): Observable<string> {
+    return this.http.get<string>(`${this._url}/SignURL/${id}`);
+  }
 }

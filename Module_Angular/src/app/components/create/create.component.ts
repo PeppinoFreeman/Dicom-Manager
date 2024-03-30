@@ -1,5 +1,5 @@
-import { HttpErrorResponse } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Component } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -7,7 +7,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
-import { take } from 'rxjs';
+import { mergeMap, take } from 'rxjs';
 import { RouteLinks } from '../../enums/route-links';
 import { ICase } from '../../interfaces/case';
 import { IImage } from '../../interfaces/image';
@@ -24,8 +24,8 @@ import { ToasterService } from '../../services/toaster.service';
 export class CreateComponent {
   isDragOver = false;
   isBusy = false;
-  images: IImage[];
-  imagesToDisplay: IImage[] = [];
+  images: IImage[] = [];
+  imagesToDisplay: any[] = [];
   readonly sex = Sex;
 
   // Used in case of edition mode (if we came from the edit button)
@@ -46,12 +46,40 @@ export class CreateComponent {
     private fileService: FileService,
     private formBuilder: FormBuilder,
     private toasterService: ToasterService,
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) {
-    this.images = [];
-
     this.editData = this.router.getCurrentNavigation()?.extras.state?.['data'];
     this._editMode = !!this.editData;
+    if (this._editMode) {
+      this.caseService
+        .getURLSignature(this.editData.id)
+        .subscribe((signature: string) => {
+          this.editData.dicomUrl.forEach((url, index) => {
+            this.http
+              .get(url + signature, { responseType: 'arraybuffer' })
+              .pipe(
+                mergeMap((response: ArrayBuffer | undefined) => {
+                  this.images.push({
+                    content: response as ArrayBuffer,
+                    name: `${index + 1}.dcm`,
+                    type: 'application/dicom',
+                  });
+                  return this.fileService.displayDicom(
+                    new DataView(response as ArrayBuffer)
+                  );
+                })
+              )
+              .subscribe((data: string) => {
+                this.imagesToDisplay.push({
+                  content: data,
+                  name: `${index + 1}.dcm`,
+                  type: 'application/dicom',
+                });
+              });
+          });
+        });
+    }
 
     this.createCaseForm = this.formBuilder.group({
       [this.formControls.patientName]: new FormControl(
