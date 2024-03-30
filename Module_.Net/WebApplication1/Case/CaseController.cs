@@ -128,7 +128,7 @@ namespace WebApplication1.Case
             @case.DicomUrl = dicomUrls;
 
             await _caseRepository.AddCase(@case);
-            _logger.LogInformation("ending case creation");
+            _logger.LogInformation("Ending case creation");
 
             return Ok(@case.Id);
         }
@@ -151,6 +151,8 @@ namespace WebApplication1.Case
         [HttpDelete("{id}", Name = "DeleteCase")]
         public async Task<IActionResult> Delete(string id)
         {
+            _logger.LogInformation("Staring case delete");
+
             var @case = _caseRepository.GetCases().Find(c => c.Id == id);
             if (@case is null)
             {
@@ -168,6 +170,7 @@ namespace WebApplication1.Case
                 throw new RequestFailedException($"Could not delete the case : {ex}");
             }
 
+            _logger.LogInformation("Ending case delete");
             return Ok(id);
         }
 
@@ -189,6 +192,8 @@ namespace WebApplication1.Case
         [HttpPut("{id}", Name = "UpdateCase")]
         public async Task<IActionResult> Update(string id, [FromBody] CaseInput caseInput)
         {
+            _logger.LogInformation("Starting case update");
+
             var @case = _caseRepository.GetCases().Find(c => c.Id == id);
             if (@case is null)
             {
@@ -212,6 +217,7 @@ namespace WebApplication1.Case
                 throw new RequestFailedException($"Could not update the case : {ex}");
             }
 
+            _logger.LogInformation("Ending case update");
             return Ok(id);
         }
 

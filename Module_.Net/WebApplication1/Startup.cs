@@ -17,6 +17,7 @@ namespace WebApplication1
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<ICaseRepository, CaseRepository>();
+            services.AddScoped<FileService>();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(options =>
             {
