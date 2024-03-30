@@ -17,6 +17,12 @@
         "DRAG-FILE": "Ou glissez-le ici",
         "SUBMIT": "Valider"
     },
+    "DIALOG": {
+        "DELETE-TITLE": "Confirmation de suppression",
+        "DELETE-MESSAGE": "Etes-vous sûre de vouloir supprimer ce cas ?",
+        "CANCEL": "Non",
+        "CONFIRM": "Oui"
+    },
     "FILTER-PLACEHOLDER":"Ecrivez un mot pour filtrer la table",
     "DELETE": "Supprimer",
     "EDIT": "Editer",

@@ -128,7 +128,7 @@ namespace WebApplication1.Case
             await _caseRepository.AddCase(@case);
             _logger.LogInformation("ending case creation");
 
-            return new JsonResult(new { id = @case.Id });
+            return Ok(@case.Id);
         }
 
         /// <summary>
@@ -144,7 +144,8 @@ namespace WebApplication1.Case
         ///
         /// </remarks>
         /// <param name="id">Case's unique identifier</param>
-        /// <returns>200 Status code</returns>
+        /// <returns>The Id of the deleted case object</returns>
+        /// <response code="201">Returns the deleted case Id</response>
         [HttpDelete("{id}", Name = "DeleteCase")]
         public async Task<IActionResult> Delete(string id)
         {
@@ -154,6 +155,7 @@ namespace WebApplication1.Case
                 throw new RequestFailedException("Case does not exist");
             }
 
+            // TODO: Handle blob storage deletion
             await _caseRepository.DeleteCase(@case);
 
             return Ok(id);
@@ -172,19 +174,27 @@ namespace WebApplication1.Case
         ///
         /// </remarks>
         /// <param name="id">Case's unique identifier</param>
-        /// <returns>200 Status code</returns>
-        [HttpPut(Name = "UpdateCase")]
-        public async Task<IActionResult> Update(CaseDto caseInput)
+        /// <returns>The Id of the create case object</returns>
+        /// <response code="201">Returns the newly created case Id</response>
+        [HttpPut("{id}", Name = "UpdateCase")]
+        public async Task<IActionResult> Update(string id, [FromBody] CaseInput caseInput)
         {
-            var @case = _caseRepository.GetCases().Find(c => c.Id == caseInput.Id);
+            var @case = _caseRepository.GetCases().Find(c => c.Id == id);
             if (@case is null)
             {
                 throw new RequestFailedException("Case does not exist");
             }
 
+            // To refactor
+            @case.PatientName = caseInput.Name;
+            @case.PatientSurname = caseInput.Surname;
+            @case.PatientSex = caseInput.Sex;
+            @case.PatientBirthdate = caseInput.Birthdate;
+
+            // TODO: Handle blob storage update
             await _caseRepository.UpdateCase(@case);
 
-            return Ok();
+            return Ok(id);
         }
 
         private async Task<string> UploadToAzureStorage(byte[] fileContent, string fileName, string id)

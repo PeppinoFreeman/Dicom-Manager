@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ListComponent } from './list.component';
+import { SimpleDialog } from './simple-dialog.component';
 
-describe('ListComponent', () => {
-  let component: ListComponent;
-  let fixture: ComponentFixture<ListComponent>;
+describe('SimpleDialog', () => {
+  let component: SimpleDialog;
+  let fixture: ComponentFixture<SimpleDialog>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ListComponent]
-    })
-    .compileComponents();
-    
-    fixture = TestBed.createComponent(ListComponent);
+      imports: [SimpleDialog],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(SimpleDialog);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

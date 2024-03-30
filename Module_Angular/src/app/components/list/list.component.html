@@ -33,7 +33,7 @@
         type="button"
         mat-raised-button
         color="primary"
-        (click)="editCase($event, element)"
+        (click)="navigateToEditPage($event, element)"
       >
         {{ "EDIT" | translate }}
       </button>
@@ -41,7 +41,7 @@
         type="button"
         mat-raised-button
         color="accent"
-        (click)="deleteCase($event, element)"
+        (click)="openDeleteConfirmation($event, element)"
       >
         {{ "DELETE" | translate }}
       </button>

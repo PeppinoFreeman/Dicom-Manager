@@ -11,6 +11,7 @@ import { ListComponent } from '../../components/list/list.component';
 import { CapitalizePipe } from '../../pipes/capitalize.pipe';
 import { ListRoutingModule } from './list-routing.module';
 import { SpinnerModule } from '../shared/spinner.module';
+import { SimpleDialogModule } from '../shared/dialog.module';
 
 @NgModule({
   declarations: [ListComponent],
@@ -24,6 +25,7 @@ import { SpinnerModule } from '../shared/spinner.module';
     MatInputModule,
     SpinnerModule,
     CapitalizePipe,
+    SimpleDialogModule,
     TranslateModule.forChild(),
     ListRoutingModule,
   ],

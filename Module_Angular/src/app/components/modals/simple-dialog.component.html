@@ -1,0 +1,16 @@
+<h2 mat-dialog-title>{{ data.title | translate }}</h2>
+<mat-dialog-content>
+  {{ data.message | translate }}
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  @if (data.hasCancel) {
+  <button mat-button [mat-dialog-close]="false">
+    {{ data.cancelLabel || "DIALOG.CANCEL" | translate }}
+  </button>
+  }
+  <!---->
+  @if (data.hasConfirm) {
+  <button mat-button [mat-dialog-close]="true" cdkFocusInitial>
+    {{ data.confirmLabel || "DIALOG.CONFIRM" | translate }}</button
+  >}
+</mat-dialog-actions>

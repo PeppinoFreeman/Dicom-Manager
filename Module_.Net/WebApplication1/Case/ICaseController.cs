@@ -8,7 +8,7 @@ namespace WebApplication1.Case
         public CaseDto GetById(string id);
         public Task<IActionResult> Create();
         public Task<IActionResult> Delete(string id);
-        public Task<IActionResult> Update(CaseDto caseInput);
+        public Task<IActionResult> Update(string id, CaseInput caseInput);
         
     }
 }

@@ -24,7 +24,7 @@ export class CaseService {
     return this.http.get<ICase>(`${this._url}/${id}`);
   }
 
-  createCase(patient: IPatient, images: IImage[]): Observable<{ id: string }> {
+  createCase(patient: IPatient, images: IImage[]): Observable<string> {
     const formData = new FormData();
     for (let key of Object.keys(patient)) {
       formData.append(key, (patient as any)[key]);
@@ -40,14 +40,14 @@ export class CaseService {
       );
     });
 
-    return this.http.post<{ id: string }>(this._url, formData);
+    return this.http.post<string>(this._url, formData);
   }
 
   deleteCase(id = ''): Observable<string> {
     return this.http.delete<string>(`${this._url}/${id}`);
   }
 
-  editCase(id = ''): Observable<ICase> {
-    return this.http.put<ICase>(this._url, id);
+  editCase(patient: IPatient, images: IImage[], id = ''): Observable<string> {
+    return this.http.put<string>(`${this._url}/${id}`, { ...patient });
   }
 }

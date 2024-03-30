@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,6 +11,7 @@ import { ToastType } from '../../enums/toast-types';
 import { ICase } from '../../interfaces/case';
 import { CaseService } from '../../services/case.service';
 import { ToasterService } from '../../services/toaster.service';
+import { SimpleDialog } from '../modals/simple-dialog.component';
 
 @Component({
   selector: 'app-list',
@@ -29,7 +31,8 @@ export class ListComponent implements OnInit, AfterViewInit {
   constructor(
     private caseService: CaseService,
     private router: Router,
-    private toasterService: ToasterService
+    private toasterService: ToasterService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -64,13 +67,29 @@ export class ListComponent implements OnInit, AfterViewInit {
     this.router.navigate([`${RouteLinks.View}/${url}`]);
   }
 
-  deleteCase(event: MouseEvent, element: ICase): void {
+  openDeleteConfirmation(event: MouseEvent, element: ICase): void {
     event.stopPropagation();
     event.preventDefault();
-    this.isBusy = true;
 
-    //TODO: open dialog
+    const dialogRef = this.dialog.open(SimpleDialog, {
+      width: '600px',
+      data: {
+        title: 'DIALOG.DELETE-TITLE',
+        message: 'DIALOG.DELETE-MESSAGE',
+        hasConfirm: true,
+        hasCancel: true,
+      },
+    });
 
+    dialogRef.afterClosed().subscribe((res) => {
+      if (res) {
+        this.isBusy = true;
+        this.deleteCase(element);
+      }
+    });
+  }
+
+  private deleteCase(element: ICase): void {
     this.caseService
       .deleteCase(element.id)
       .pipe(take(1))
@@ -95,11 +114,15 @@ export class ListComponent implements OnInit, AfterViewInit {
       });
   }
 
-  editCase(event: MouseEvent, element: ICase): void {
+  navigateToEditPage(event: MouseEvent, element: ICase): void {
     event.stopPropagation();
     event.preventDefault();
 
-    console.log(element);
+    this.router.navigate([`${RouteLinks.Create}`], {
+      state: {
+        data: element,
+      },
+    });
   }
 
   sortData(event: Sort): void {

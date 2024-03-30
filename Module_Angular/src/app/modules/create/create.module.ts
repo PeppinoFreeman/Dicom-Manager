@@ -37,5 +37,6 @@ import { CreateRoutingModule } from './create-routing.module';
       useValue: { color: 'primary' },
     },
   ],
+  exports: [CreateComponent],
 })
 export class CreateModule {}

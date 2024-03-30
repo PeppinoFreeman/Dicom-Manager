@@ -1,5 +1,5 @@
 import { HttpErrorResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -9,6 +9,7 @@ import {
 import { Router } from '@angular/router';
 import { take } from 'rxjs';
 import { RouteLinks } from '../../enums/route-links';
+import { ICase } from '../../interfaces/case';
 import { IImage } from '../../interfaces/image';
 import { IPatient, Sex } from '../../interfaces/patient';
 import { CaseService } from '../../services/case.service';
@@ -26,6 +27,10 @@ export class CreateComponent {
   images: IImage[];
   imagesToDisplay: IImage[] = [];
   readonly sex = Sex;
+
+  // Used in case of edition mode (if we came from the edit button)
+  readonly editData: ICase;
+  private _editMode: boolean = false;
 
   // Used for form validation
   createCaseForm: FormGroup;
@@ -45,19 +50,34 @@ export class CreateComponent {
   ) {
     this.images = [];
 
+    this.editData = this.router.getCurrentNavigation()?.extras.state?.['data'];
+    this._editMode = !!this.editData;
+
     this.createCaseForm = this.formBuilder.group({
-      [this.formControls.patientName]: new FormControl('', {
-        validators: Validators.compose([Validators.required]),
-      }),
-      [this.formControls.patientBirthdate]: new FormControl(new Date(), {
-        validators: Validators.compose([Validators.required]),
-      }),
-      [this.formControls.patientSurname]: new FormControl('', {
-        validators: Validators.compose([Validators.required]),
-      }),
-      [this.formControls.patientSex]: new FormControl('', {
-        validators: Validators.compose([Validators.required]),
-      }),
+      [this.formControls.patientName]: new FormControl(
+        this.editData?.name || '',
+        {
+          validators: Validators.compose([Validators.required]),
+        }
+      ),
+      [this.formControls.patientBirthdate]: new FormControl(
+        new Date(this.editData?.birthdate),
+        {
+          validators: Validators.compose([Validators.required]),
+        }
+      ),
+      [this.formControls.patientSurname]: new FormControl(
+        this.editData?.surname || '',
+        {
+          validators: Validators.compose([Validators.required]),
+        }
+      ),
+      [this.formControls.patientSex]: new FormControl(
+        this.editData?.sex ?? '',
+        {
+          validators: Validators.compose([Validators.required]),
+        }
+      ),
     });
   }
 
@@ -75,7 +95,7 @@ export class CreateComponent {
       .subscribe((data) => ([this.images, this.imagesToDisplay] = data));
   }
 
-  create(): void {
+  save(): void {
     const get = (test: string) => this.createCaseForm.get(test)?.value;
     const patient: IPatient = {
       name: get(this.formControls.patientName).trim(),
@@ -84,12 +104,37 @@ export class CreateComponent {
       sex: get(this.formControls.patientSex),
     };
 
+    this._editMode ? this.update(patient) : this.create(patient);
+  }
+
+  private create(patient: IPatient): void {
     this.caseService
       .createCase(patient, this.images)
       .pipe(take(1))
       .subscribe({
-        next: (data: { id: string }) =>
-          this.router.navigate([`${RouteLinks.View}/${data.id}`]),
+        next: (id: string) =>
+          this.router.navigate([`${RouteLinks.View}/${id}`]),
+        error: (err: HttpErrorResponse) => {
+          this.isBusy = false;
+
+          const message = err.error?.message || err.message;
+          this.toasterService.openToast(`ERR: ${message}`);
+          console.error(err);
+        },
+        complete: () => (this.isBusy = false),
+      });
+  }
+
+  private update(patient: IPatient): void {
+    const id = this.editData.id;
+    console.log('test');
+
+    this.caseService
+      .editCase(patient, this.images, id)
+      .pipe(take(1))
+      .subscribe({
+        next: (id: string) =>
+          this.router.navigate([`${RouteLinks.View}/${id}`]),
         error: (err: HttpErrorResponse) => {
           this.isBusy = false;
 

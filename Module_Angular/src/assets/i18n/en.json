@@ -17,6 +17,12 @@
         "DRAG-FILE": "Or drag it here",
         "SUBMIT": "Validate"
     },
+    "DIALOG": {
+        "DELETE-TITLE": "Delete confirmation",
+        "DELETE-MESSAGE": "Are you sure you want to delete this item?",
+        "CANCEL": "No",
+        "CONFIRM": "Yes"
+    },
     "FILTER-PLACEHOLDER": "Write a word to filter the table",
     "DELETE": "Delete",
     "EDIT": "Edit",
