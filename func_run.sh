@@ -4,4 +4,4 @@ PROJECT_DIR="Module_Azure_Function"
 
 cd "$PROJECT_DIR" || exit
 
-func start
+func start --python

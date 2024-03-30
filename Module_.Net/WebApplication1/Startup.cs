@@ -22,14 +22,14 @@ namespace WebApplication1
             {
                 options.SwaggerDoc("v1", new OpenApiInfo()
                 {
-                    Description = "This is an Api (in Asp .Net Core v8) offering basic CRUD operations on DICOM files",
+                    Description = "This is an API (in Asp .Net Core v8) offering basic CRUD operations on DICOM files",
                     Title = "DICOM Manager API",
                     Version = "v1",
                     TermsOfService = new Uri("https://www.icann.org/privacy/tos"),
                     Contact = new OpenApiContact
                     {
                         Name = "Github",
-                        Url = new Uri("https://github.com/AgixisLabAdmin/AgixisLab/tree/sch/full-stack-project")
+                        Url = new Uri("https://github.com/PeppinoFreeman/Dicom-Manager")
                     },
                     License = new OpenApiLicense
                     {

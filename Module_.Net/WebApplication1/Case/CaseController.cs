@@ -84,7 +84,7 @@ namespace WebApplication1.Case
         [RequestFormLimits(MultipartBodyLengthLimit = 256 * 1024 * 1024)]
         [HttpPost(Name = "CreateCase")]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<ActionResult> Create()
+        public async Task<IActionResult> Create()
         {
             _logger.LogInformation("Starting case creation");
 
@@ -156,7 +156,7 @@ namespace WebApplication1.Case
 
             await _caseRepository.DeleteCase(@case);
 
-            return Ok();
+            return Ok(id);
         }
 
         /// <summary>

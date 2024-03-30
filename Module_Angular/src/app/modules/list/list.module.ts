@@ -10,6 +10,7 @@ import { TranslateModule } from '@ngx-translate/core';
 import { ListComponent } from '../../components/list/list.component';
 import { CapitalizePipe } from '../../pipes/capitalize.pipe';
 import { ListRoutingModule } from './list-routing.module';
+import { SpinnerModule } from '../shared/spinner.module';
 
 @NgModule({
   declarations: [ListComponent],
@@ -21,6 +22,7 @@ import { ListRoutingModule } from './list-routing.module';
     MatPaginatorModule,
     MatFormFieldModule,
     MatInputModule,
+    SpinnerModule,
     CapitalizePipe,
     TranslateModule.forChild(),
     ListRoutingModule,

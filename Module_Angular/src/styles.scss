@@ -13,4 +13,19 @@ body {
     --mat-snack-bar-button-color: #fff;
     --mdc-snackbar-supporting-text-color: antiquewhite;
   }
+  &.warn-toast {
+    --mdc-snackbar-container-color: #e79e00;
+    --mat-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: antiquewhite;
+  }
+  &.success-toast {
+    --mdc-snackbar-container-color: #2ab648;
+    --mat-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: antiquewhite;
+  }
+  &.info-toast {
+    --mdc-snackbar-container-color: #0066ff;
+    --mat-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: antiquewhite;
+  }
 }

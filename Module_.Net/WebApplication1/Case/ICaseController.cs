@@ -6,7 +6,9 @@ namespace WebApplication1.Case
     {
         public List<CaseDto> Get();
         public CaseDto GetById(string id);
-        public Task<ActionResult> Create();
-
+        public Task<IActionResult> Create();
+        public Task<IActionResult> Delete(string id);
+        public Task<IActionResult> Update(CaseDto caseInput);
+        
     }
 }

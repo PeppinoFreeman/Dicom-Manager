@@ -5,6 +5,7 @@ import {
   MatSnackBarVerticalPosition,
 } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
+import { ToastType } from '../enums/toast-types';
 
 @Injectable({
   providedIn: 'root',
@@ -21,13 +22,14 @@ export class ToasterService {
 
   openToast(
     message: string,
+    toastType: ToastType = ToastType.Error,
     horizontalPosition?: MatSnackBarHorizontalPosition,
     verticalPosition?: MatSnackBarVerticalPosition
   ): void {
     this._snackBar.open(message, this._translate.instant('DISMISS-TOAST'), {
       horizontalPosition: horizontalPosition || this._horizontalPosition,
       verticalPosition: verticalPosition || this._verticalPosition,
-      panelClass: ['error-toast'],
+      panelClass: [`${toastType}-toast`],
     });
   }
 

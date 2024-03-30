@@ -42,4 +42,12 @@ export class CaseService {
 
     return this.http.post<{ id: string }>(this._url, formData);
   }
+
+  deleteCase(id = ''): Observable<string> {
+    return this.http.delete<string>(`${this._url}/${id}`);
+  }
+
+  editCase(id = ''): Observable<ICase> {
+    return this.http.put<ICase>(this._url, id);
+  }
 }
