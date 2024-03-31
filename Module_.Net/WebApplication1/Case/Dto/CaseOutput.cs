@@ -2,7 +2,7 @@
 
 namespace WebApplication1.Case
 {
-    public class CaseDto
+    public class CaseOutput
     {
         [Required]
         public string Id { get; protected set; }
@@ -15,7 +15,7 @@ namespace WebApplication1.Case
         [Required]
         public Sex Sex { get; set; }
         public List<string> DicomUrl { get; set; }
-        public CaseDto(Case inputCase)
+        public CaseOutput(Case inputCase)
         {
             Id = inputCase.Id;
             Name = inputCase.PatientName;

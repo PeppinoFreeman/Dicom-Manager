@@ -1,5 +1,6 @@
 using Azure;
 using Azure.Storage.Blobs;
+using WebApplication1.Case;
 
 namespace WebApplication1
 {
@@ -36,7 +37,7 @@ namespace WebApplication1
             try
             {
                 var containerClient = _blobServiceClient.GetBlobContainerClient($"container-{id}");
-                await containerClient.DeleteAsync();
+                await containerClient.DeleteIfExistsAsync();
             }
             catch (RequestFailedException ex)
             {
@@ -44,18 +45,5 @@ namespace WebApplication1
             }
         }
 
-        public async Task UpdateBlobContainer(string id)
-        {
-            try
-            {
-                var containerClient = _blobServiceClient.GetBlobContainerClient($"container-{id}");
-                // To Complete
-            }
-            catch (RequestFailedException ex)
-            {
-                throw new RequestFailedException($"Could not update the file : {ex}");
-            }
-
-        }
     }
 }

@@ -58,8 +58,8 @@ def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
         patient_pixels = get_pixels_hu(patient_dicom)
 
         # get masks 
-        segmented_lungs = segment_lung_mask(patient_pixels, fill_lung_structures=False)
-        segmented_lungs_fill = segment_lung_mask(patient_pixels, fill_lung_structures=True)
+        segmented_lungs = segment_lung_mask(patient_pixels*255, fill_lung_structures=False)
+        segmented_lungs_fill = segment_lung_mask(patient_pixels*255, fill_lung_structures=True)
         internal_structures = segmented_lungs_fill - segmented_lungs
 
         # isolate lung from chest
@@ -70,7 +70,7 @@ def http_trigger(req: func.HttpRequest) -> func.HttpResponse:
         seg_lung_pixels = copied_pixels
         
         # generate plot of 1 slice
-        result = generate_plot(patient_pixels, segmented_lungs_fill, seg_lung_pixels, internal_structures)
+        result = generate_plot(patient_pixels, segmented_lungs_fill, seg_lung_pixels*255, internal_structures)
         
         # generate a GIF of all slices 
         # result = generate_gif(segmented_lungs_fill)

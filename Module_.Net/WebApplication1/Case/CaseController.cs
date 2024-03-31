@@ -36,10 +36,10 @@ namespace WebApplication1.Case
         /// </summary>
         /// <returns>A List of CaseDto objects</returns>
         [HttpGet(Name = "GetCases")]
-        public List<CaseDto> Get()
+        public List<CaseOutput> Get()
         {
-            var caseList = new List<CaseDto>();
-            _caseRepository.GetCases().ForEach(c => caseList.Add(new CaseDto(c)));
+            var caseList = new List<CaseOutput>();
+            _caseRepository.GetCases().ForEach(c => caseList.Add(new CaseOutput(c)));
 
             return caseList;
         }
@@ -60,7 +60,7 @@ namespace WebApplication1.Case
         /// <returns>A CaseDto object representing the specified case</returns>
         /// <response code="201">Returns the newly created item</response>
         [HttpGet("{id}", Name = "GetCaseById")]
-        public CaseDto GetById(string id)
+        public CaseOutput GetById(string id)
         {
             var @case = _caseRepository.GetCases().Find(c => c.Id == id);
             if (@case is null)
@@ -68,7 +68,7 @@ namespace WebApplication1.Case
                 throw new RequestFailedException("Case does not exist");
             }
 
-            var caseDto = new CaseDto(@case);
+            var caseDto = new CaseOutput(@case);
 
             var sasToken = GenerateSharedAccessToken(id);
 
@@ -90,44 +90,22 @@ namespace WebApplication1.Case
         {
             _logger.LogInformation("Starting case creation");
 
-            var @case = new Case();
-            var dicomUrls = new List<string>();
-            @case.Id = Guid.NewGuid().ToString();
-
-            var reader = MultipartRequestHelper.GetMultipartReader(Request.ContentType, HttpContext.Request.Body);
-            var section = await reader.ReadNextSectionAsync();
-
-            while (section != null)
+            var @case = new Case
             {
-                var hasContentDispositionHeader =
-                    ContentDispositionHeaderValue.TryParse(
-                        section.ContentDisposition, out var contentDisposition);
+                Id = Guid.NewGuid().ToString()
+            };
 
-                if (!hasContentDispositionHeader)
-                {
-                    section = await reader.ReadNextSectionAsync();
-                    continue;
-                }
+            await ProcessFormData(@case);
 
-                if (!MultipartRequestHelper.HasFileContentDisposition(contentDisposition))
-                {
-                    await InsertFormFieldIntoCase(section, contentDisposition, @case);
-                }
-                else
-                {
-                    var streamedFileContent = await FileHelper.ProcessStreamedFile(section, contentDisposition);
-                    var fileName = contentDisposition?.FileName.Value;
-
-                    dicomUrls.Add(await _fileService.UploadToAzureStorage(streamedFileContent, fileName, @case.Id));
-
-                    _logger.LogInformation("Uploaded file '{fileName}' to Azure Blob Storage'", fileName);
-                }
-                section = await reader.ReadNextSectionAsync();
+            try
+            {
+                await _caseRepository.AddCase(@case);
+            }
+            catch (RequestFailedException ex)
+            {
+                throw new RequestFailedException($"Could not create the case : {ex}");
             }
 
-            @case.DicomUrl = dicomUrls;
-
-            await _caseRepository.AddCase(@case);
             _logger.LogInformation("Ending case creation");
 
             return Ok(@case.Id);
@@ -189,8 +167,11 @@ namespace WebApplication1.Case
         /// <param name="id">Case's unique identifier</param>
         /// <returns>The Id of the create case object</returns>
         /// <response code="201">Returns the newly created case Id</response>
+        [DisableFormValueModelBinding]
+        [RequestSizeLimit(256 * 1024 * 1024)] // 256 MB
+        [RequestFormLimits(MultipartBodyLengthLimit = 256 * 1024 * 1024)]
         [HttpPut("{id}", Name = "UpdateCase")]
-        public async Task<IActionResult> Update(string id, [FromBody] CaseInput caseInput)
+        public async Task<IActionResult> Update(string id)
         {
             _logger.LogInformation("Starting case update");
 
@@ -200,13 +181,8 @@ namespace WebApplication1.Case
                 throw new RequestFailedException("Case does not exist");
             }
 
-            // To refactor
-            @case.PatientName = caseInput.Name;
-            @case.PatientSurname = caseInput.Surname;
-            @case.PatientSex = caseInput.Sex;
-            @case.PatientBirthdate = caseInput.Birthdate;
-
-            await _fileService.UpdateBlobContainer(id);
+            await _fileService.DeleteBlobContainer(id);
+            await ProcessFormData(@case);
 
             try
             {
@@ -219,6 +195,43 @@ namespace WebApplication1.Case
 
             _logger.LogInformation("Ending case update");
             return Ok(id);
+        }
+
+        private async Task ProcessFormData(Case @case) {
+            var dicomUrls = new List<string>();
+
+            var reader = MultipartRequestHelper.GetMultipartReader(Request.ContentType, HttpContext.Request.Body);
+            var section = await reader.ReadNextSectionAsync();
+
+            while (section != null)
+            {
+                var hasContentDispositionHeader =
+                    ContentDispositionHeaderValue.TryParse(
+                        section.ContentDisposition, out var contentDisposition);
+
+                if (!hasContentDispositionHeader)
+                {
+                    section = await reader.ReadNextSectionAsync();
+                    continue;
+                }
+
+                if (!MultipartRequestHelper.HasFileContentDisposition(contentDisposition))
+                {
+                    await InsertFormFieldIntoCase(section, contentDisposition, @case);
+                }
+                else
+                {
+                    var streamedFileContent = await FileHelper.ProcessStreamedFile(section, contentDisposition);
+                    var fileName = contentDisposition?.FileName.Value;
+
+                    dicomUrls.Add(await _fileService.UploadToAzureStorage(streamedFileContent, fileName, @case.Id));
+
+                    _logger.LogInformation("Uploaded file '{fileName}' to Azure Blob Storage'", fileName);
+                }
+                section = await reader.ReadNextSectionAsync();
+            }
+
+            @case.DicomUrl = dicomUrls;
         }
 
         private static async Task InsertFormFieldIntoCase(MultipartSection section, ContentDispositionHeaderValue? contentDisposition, Case @case)

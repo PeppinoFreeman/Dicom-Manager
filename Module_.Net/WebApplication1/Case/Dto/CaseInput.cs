@@ -12,6 +12,14 @@ namespace WebApplication1.Case
         public DateTime Birthdate { get; set; }
         [Required]
         public Sex Sex { get; set; }
-        // public List<IFormFile> Images { get; set; }
+        [Required]
+        public List<Image> Images { get; set; }
+    }
+
+    public class Image
+    {
+        public string Name { get; set; }
+        public string Type { get; set; }
+        public byte[] Content { get; set; }
     }
 }

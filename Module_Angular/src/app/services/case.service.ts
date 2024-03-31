@@ -25,6 +25,26 @@ export class CaseService {
   }
 
   createCase(patient: IPatient, images: IImage[]): Observable<string> {
+    const formData = this.generateFormData(patient, images);
+
+    return this.http.post<string>(this._url, formData);
+  }
+
+  deleteCase(id = ''): Observable<string> {
+    return this.http.delete<string>(`${this._url}/${id}`);
+  }
+
+  editCase(patient: IPatient, images: IImage[], id = ''): Observable<string> {
+    const formData = this.generateFormData(patient, images);
+
+    return this.http.put<string>(`${this._url}/${id}`, formData);
+  }
+
+  getURLSignature(id = ''): Observable<string> {
+    return this.http.get<string>(`${this._url}/SignURL/${id}`);
+  }
+
+  private generateFormData(patient: IPatient, images: IImage[]): FormData {
     const formData = new FormData();
     for (let key of Object.keys(patient)) {
       formData.append(key, (patient as any)[key]);
@@ -39,19 +59,6 @@ export class CaseService {
         image.name
       );
     });
-
-    return this.http.post<string>(this._url, formData);
-  }
-
-  deleteCase(id = ''): Observable<string> {
-    return this.http.delete<string>(`${this._url}/${id}`);
-  }
-
-  editCase(patient: IPatient, images: IImage[], id = ''): Observable<string> {
-    return this.http.put<string>(`${this._url}/${id}`, { ...patient });
-  }
-
-  getURLSignature(id = ''): Observable<string> {
-    return this.http.get<string>(`${this._url}/SignURL/${id}`);
+    return formData;
   }
 }
